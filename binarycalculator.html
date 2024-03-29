@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: "Courier New", Courier, monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Live Binary Representation</h2>
+    <p>Enter a number:</p>
+    <input type="text" id="numInput" oninput="showBinary(this.value)">
+    <p id="binaryOutput">00000000<br>00000000<br>00000000<br>00000000<br>00000000<br>00000000<br>00000000<br>00000000
+    </p>
+
+    <script>
+        function showBinary(value) {
+            // Filter out any non-numeric characters
+            var filteredValue = value.replace(/\D/g, '');
+
+            // Update the input box to only show the numeric portion
+            document.getElementById('numInput').value = filteredValue;
+
+            // Proceed with the usual binary conversion
+            var num = BigInt(filteredValue) || BigInt(0);
+            var binary = num.toString(2);
+            binary = "0".repeat(64 - binary.length) + binary;
+            var formatted = "";
+            for (var i = 0; i < 8; i++) {
+                formatted += binary.substr(i * 8, 8) + "<br>";
+            }
+            document.getElementById("binaryOutput").innerHTML = formatted;
+        }
+    </script>
+</body>
+
+</html>

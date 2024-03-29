@@ -1,14 +1,45 @@
-def forwardMoves():
+def whitePawnPushes():
     forwards = []
     for square in range(64):
         forward = [0] * 64
-        if square > 7:
+        if 7 < square < 56:
             if 47 < square and square < 56:
                 forward[square - 16] = 1
+                forward[square - 8] = 1
             else:
                 forward[square - 8] = 1
-        forwards.append("0b" + "".join(str(bit) for bit in forward))
-    return forwards
+        forwards.append(int("".join(str(bit) for bit in forward), 2))
+    return list(reversed(forwards))
+
+
+def blackPawnPushes():
+    forwards = []
+    for square in range(64):
+        forward = [0] * 64
+        if 7 < square < 56:
+            if 7 < square and square < 16:
+                forward[square + 16] = 1
+                forward[square + 8] = 1
+            else:
+                forward[square + 8] = 1
+        forwards.append(int("".join(str(bit) for bit in forward), 2))
+    return list(reversed(forwards))
+
+
+def whitePawnCaptures():
+    diagonals = []
+    for square in range(64):
+        diagonal = [0] * 64
+        if 7 < square < 56:
+            if square % 8 == 0:
+                diagonal[square - 7] = 1
+            elif (square + 1) % 8 == 0:
+                diagonal[square - 9] = 1
+            else:
+                diagonal[square - 9] = 1
+                diagonal[square - 7] = 1
+        diagonals.append(int("".join(str(bit) for bit in diagonal), 2))
+    return list(reversed(diagonals))
 
 
 #  0  1  2  3  4  5  6  7
@@ -21,30 +52,23 @@ def forwardMoves():
 # 56 57 58 59 60 61 62 63
 
 
-def diagonalMoves():
+def blackPawnCaptures():
     diagonals = []
     for square in range(64):
         diagonal = [0] * 64
-        if square > 7:
+        if 7 < square < 56:
             if square % 8 == 0:
-                diagonal[square - 7] = 1
+                diagonal[square + 9] = 1
             elif (square + 1) % 8 == 0:
-                diagonal[square - 9] = 1
+                diagonal[square + 7] = 1
             else:
-                diagonal[square - 9] = 1
-                diagonal[square - 7] = 1
-        diagonals.append("0b" + "".join(str(bit) for bit in diagonal))
-    return diagonals
+                diagonal[square + 7] = 1
+                diagonal[square + 9] = 1
+        diagonals.append(int("".join(str(bit) for bit in diagonal), 2))
+    return list(reversed(diagonals))
 
 
-bitboards = diagonalMoves()
-
-
-def map_to_square(n):
-    rank = str((7 - (n // 8)) + 1)
-    file = chr((n % 8) + 97)
-    return file + rank
-
-
-for index in range(len(bitboards) - 1, -1, -1):
-    print(map_to_square(index) + " * " + bitboards[index] + " | ")
+print(whitePawnPushes())
+print(whitePawnCaptures())
+print(blackPawnPushes())
+print(blackPawnCaptures())

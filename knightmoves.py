@@ -24,7 +24,7 @@ def knight_moves():
                     bit_pos = new_x * board_size + new_y
                     bit_mask |= 1 << (63 - bit_pos)
             bitboards.append(bit_mask)
-    return list(bitboards)
+    return list(reversed(bitboards))
 
 
 bitboards = knight_moves()
@@ -35,17 +35,4 @@ def map_to_square(n):
     file = chr((n % 8) + 97)
     return file + rank
 
-
-# for index in range(len(bitboards) - 1, -1, -1):
-#     print(map_to_square(index) + " * " + str(bitboards[index]) + " | ")
-
-# for index in range(len(bitboards) - 1, -1, -1):
-#     print(
-#         "const "
-#         + map_to_square(index)
-#         + ": u64 = knightBoard."
-#         + map_to_square(index)
-#         + ";"
-#     )
-
-print(2**18 + 2**16 + 2**21 + 2**23)
+print(bitboards)

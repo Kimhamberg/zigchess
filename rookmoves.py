@@ -7,8 +7,8 @@ def generate_north_rays():
                 if (iRay := square + north) < 0:
                     break
                 north_ray[iRay] = 1
-        north_rays.append("0b" + "".join(str(bit) for bit in north_ray))
-    return north_rays
+        north_rays.append(int("".join(str(bit) for bit in north_ray), 2))
+    return list(reversed(north_rays))
 
 
 def generate_south_rays():
@@ -20,8 +20,8 @@ def generate_south_rays():
                 if (iRay := square + south) > 63:
                     break
                 south_ray[iRay] = 1
-        south_rays.append("0b" + "".join(str(bit) for bit in south_ray))
-    return south_rays
+        south_rays.append(int("".join(str(bit) for bit in south_ray), 2))
+    return list(reversed(south_rays))
 
 
 def generate_east_rays():
@@ -33,8 +33,8 @@ def generate_east_rays():
                 if (iRay := square + east) % 8 == 0:
                     break
                 east_ray[iRay] = 1
-        east_rays.append("0b" + "".join(str(bit) for bit in east_ray))
-    return east_rays
+        east_rays.append(int("".join(str(bit) for bit in east_ray), 2))
+    return list(reversed(east_rays))
 
 
 def generate_west_rays():
@@ -47,8 +47,8 @@ def generate_west_rays():
                     west_ray[iRay] = 1
                     break
                 west_ray[iRay] = 1
-        west_rays.append("0b" + "".join(str(bit) for bit in west_ray))
-    return west_rays
+        west_rays.append(int("".join(str(bit) for bit in west_ray), 2))
+    return list(reversed(west_rays))
 
 
 print(generate_east_rays())
