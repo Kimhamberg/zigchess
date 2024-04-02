@@ -11,8 +11,8 @@ const getQueenMoves = @import("queenmoves.zig").getQueenMoves;
 const getKingMoves = @import("kingmoves.zig").getKingMoves;
 const print = @import("std").debug.print;
 
-pub fn main() void {
-    var boards = createBoardsFromFEN("rnbqkbnr/ppppp1p1/5p2/8/8/5NPp/PPPPPP1P/RNBQKB1R w KQkq - 0 5");
+pub fn getWhiteMoveCount(FEN: []const u8) u7 {
+    var boards = createBoardsFromFEN(FEN);
     var moveCount: u7 = 0;
     var i = @popCount(boards.whiteRook);
     while (i != 0) : (i -= 1) {
@@ -56,5 +56,10 @@ pub fn main() void {
         moveCount += @popCount(captures);
         boards.whitePawn = boards.whitePawn & (boards.whitePawn - 1);
     }
-    print("{}\n", .{moveCount});
+    return moveCount;
+}
+
+pub fn main() void {
+    const moveCount = getWhiteMoveCount("rnbqkbnr/ppppp1p1/5p2/8/8/5NPp/PPPPPP1P/RNBQKB1R w KQkq - 0 5");
+    print("{}", .{moveCount});
 }

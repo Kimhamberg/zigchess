@@ -20,20 +20,29 @@ pub fn getWhiteDoublePushes(pawns: u64, freeSquares: u64) u64 {
     return (singlePushes << 8) & freeSquares & rank4;
 }
 
-pub fn getWhiteCaptures(square: u64, enemySquares: u64) u64 {
-    return whitePawnCapturesAt[square] & enemySquares;
+pub fn getWhiteCaptures(square: u64, enemySquares: u64, canPassant: u1) u64 {
+    const normalCaptures: u64 = whitePawnCapturesAt[square] & enemySquares;
+    const enPassants: u64 = canPassant * (whitePawnCapturesAt[square] & (enemySquares << 8));
+    return normalCaptures | enPassants;
 }
 
-pub fn getWhitePawnMoves(square: u64, freeSquares: u64, enemySquares: u64) u64 {
-    return (whitePawnPushesAt[square] & freeSquares) | (whitePawnCapturesAt[square] & enemySquares);
+pub fn getBlackSinglePushes(pawns: u64, freeSquares: u64) u64 {
+    return (pawns >> 8) & freeSquares;
 }
 
-pub fn getBlackPawnMoves(square: u64, freeSquares: u64, enemySquares: u64) u64 {
-    return (blackPawnPushesAt[square] & freeSquares) | (blackPawnCapturesAt[square] & enemySquares);
+pub fn getBlackDoublePushes(pawns: u64, freeSquares: u64) u64 {
+    const rank5 = 1095216660480;
+    const singlePushes = getBlackSinglePushes(pawns, freeSquares);
+    return (singlePushes >> 8) & freeSquares & rank5;
+}
+
+pub fn getBlackCaptures(square: u64, enemySquares: u64, canPassant: u1) u64 {
+    const normalCaptures = blackPawnCapturesAt[square] & enemySquares;
+    const enPassants = canPassant * (blackPawnCapturesAt[square] & (enemySquares >> 8));
+    return normalCaptures | enPassants;
 }
 
 pub fn main() void {
     const boards = createStartBoards();
     print("{}\n", .{boards.whitePawn});
-    print("{}", .{getWhitePawnMoves(50, boards.free, boards.black)});
 }
