@@ -19,10 +19,10 @@ const BRookL = 9223372036854775808;
 pub const State = packed struct(u8) {
     colorToMove: Color,
     passantIsPossible: bool,
-    whiteHasCastlingRightsLeft: bool,
-    whiteHasCastlingRightsRight: bool,
-    blackHasCastlingRightsLeft: bool,
-    blackHasCastlingRightsRight: bool,
+    whiteHasLeftCastlingRights: bool,
+    whiteHasRightCastlingRights: bool,
+    blackHasLeftCastlingRights: bool,
+    blackHasRightCastlingRights: bool,
 };
 
 pub fn canWhiteCastleLeft(attacked: u64, occupied: u64, rook: u64, whiteCanCastleLeft: bool) bool {
@@ -53,11 +53,27 @@ pub fn pawnPushed(pState: *State) void {
     pState.*.passantIsPossible = true;
 }
 pub fn blackKingMoved(pState: *State) void {
-    pState.*.blackHasCastlingRightsLeft = false;
-    pState.*.blackHasCastlingRightsRight = false;
+    pState.*.blackHasLeftCastlingRights = false;
+    pState.*.blackHasRightCastlingRights = false;
 }
 
 pub fn whiteKingMoved(pState: *State) void {
-    pState.*.whiteHasCastlingRightsLeft = false;
-    pState.*.whiteHasCastlingRightsRight = false;
+    pState.*.whiteHasLeftCastlingRights = false;
+    pState.*.whiteHasRightCastlingRights = false;
+}
+
+pub fn rightWhiteRookMoved(pState: *State) void {
+    pState.*.whiteHasRightCastlingRights = false;
+}
+
+pub fn leftWhiteRookMoved(pState: *State) void {
+    pState.*.whiteHasLeftCastlingRights = false;
+}
+
+pub fn rightBlackRookMoved(pState: *State) void {
+    pState.*.blackHasRightCastlingRights = false;
+}
+
+pub fn leftBlackRookMoved(pState: *State) void {
+    pState.*.blackHasLeftCastlingRights = false;
 }
