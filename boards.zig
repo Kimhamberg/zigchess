@@ -1,5 +1,6 @@
 const pow = @import("std").math.pow;
-const print = @import("std").debug.print;
+const State = @import("state.zig").State;
+const split = @import("std").mem.split;
 
 pub const Boards = struct {
     whiteRook: u64,
@@ -40,96 +41,80 @@ pub fn createStartBoards() Boards {
     return Boards{ .whiteRook = whiteRook, .whiteKnight = whiteKnight, .whiteBishop = whiteBishop, .whiteQueen = whiteQueen, .whiteKing = whiteKing, .whitePawn = whitePawn, .blackRook = blackRook, .blackKnight = blackKnight, .blackBishop = blackBishop, .blackQueen = blackQueen, .blackKing = blackKing, .blackPawn = blackPawn, .white = white, .black = black, .occupied = occupied, .free = free };
 }
 
-pub fn createBoardsFromFEN(fen: []const u8) Boards {
-    var boards = Boards{
-        .whiteRook = 0,
-        .blackRook = 0,
-        .whiteKnight = 0,
-        .blackKnight = 0,
-        .whiteBishop = 0,
-        .blackBishop = 0,
-        .whiteQueen = 0,
-        .blackQueen = 0,
-        .whiteKing = 0,
-        .blackKing = 0,
-        .whitePawn = 0,
-        .blackPawn = 0,
-        .white = 0,
-        .black = 0,
-        .occupied = 0,
-        .free = 0,
-    };
+pub fn createBoardsFromFEN(boards: *Boards, state: *State, fen: []const u8) Boards {
+    var splits = split(u8, fen, " ");
+    const boardfen = splits.next();
     var index: u6 = 63;
-    for (fen) |c| {
+    for (boardfen) |c| {
         switch (c) {
             'p' => {
-                boards.blackPawn += pow(u64, 2, index);
+                boards.*.blackPawn += pow(u64, 2, index);
                 if (index > 0) {
                     index -= 1;
                 }
             },
             'P' => {
-                boards.whitePawn += pow(u64, 2, index);
+                boards.*.whitePawn += pow(u64, 2, index);
                 if (index > 0) {
                     index -= 1;
                 }
             },
             'n' => {
-                boards.blackKnight += pow(u64, 2, index);
+                boards.*.blackKnight += pow(u64, 2, index);
                 if (index > 0) {
                     index -= 1;
                 }
             },
             'N' => {
-                boards.whiteKnight += pow(u64, 2, index);
+                boards.*.whiteKnight += pow(u64, 2, index);
                 if (index > 0) {
                     index -= 1;
                 }
             },
             'r' => {
-                boards.blackRook += pow(u64, 2, index);
+                boards.*.blackRook += pow(u64, 2, index);
                 if (index > 0) {
                     index -= 1;
                 }
             },
             'R' => {
-                boards.whiteRook += pow(u64, 2, index);
+                boards.*.whiteRook += pow(u64, 2, index);
                 if (index > 0) {
                     index -= 1;
                 }
             },
             'b' => {
-                boards.blackBishop += pow(u64, 2, index);
+                boards.*.blackBishop += pow(u64, 2, index);
                 if (index > 0) {
                     index -= 1;
                 }
             },
             'B' => {
-                boards.whiteBishop += pow(u64, 2, index);
+                boards.*.whiteBishop += pow(u64, 2, index);
                 if (index > 0) {
                     index -= 1;
                 }
             },
             'q' => {
-                boards.blackQueen += pow(u64, 2, index);
+                boards.*.blackQueen += pow(u64, 2, index);
                 if (index > 0) {
                     index -= 1;
                 }
             },
             'Q' => {
-                boards.whiteQueen += pow(u64, 2, index);
+                boards.*.whiteQueen += pow(u64, 2, index);
                 if (index > 0) {
                     index -= 1;
                 }
             },
             'k' => {
-                boards.blackKing += pow(u64, 2, index);
+                boards.*.blackKing += pow(u64, 2, index);
                 if (index > 0) {
                     index -= 1;
                 }
             },
             'K' => {
-                boards.whiteKing += pow(u64, 2, index);
+                boards.*.whiteKing += pow(u64, 2, index);
                 if (index > 0) {
                     index -= 1;
                 }
@@ -149,5 +134,4 @@ pub fn createBoardsFromFEN(fen: []const u8) Boards {
         boards.blackQueen | boards.blackKing | boards.blackPawn;
     boards.occupied = boards.white | boards.black;
     boards.free = ~boards.occupied;
-    return boards;
 }

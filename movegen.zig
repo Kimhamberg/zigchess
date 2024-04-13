@@ -59,7 +59,12 @@ pub fn getWhiteMoveCount(FEN: []const u8) u7 {
     return moveCount;
 }
 
+pub fn f(n: u64) u64 {
+    return @intFromBool(n > 0);
+}
+
 pub fn main() void {
-    const moveCount = getWhiteMoveCount("rnbqkbnr/ppppp1p1/5p2/8/8/5NPp/PPPPPP1P/RNBQKB1R w KQkq - 0 5");
-    print("{}", .{moveCount});
+    // const moveCount = getWhiteMoveCount("rnbqkbnr/ppppp1p1/5p2/8/8/5NPp/PPPPPP1P/RNBQKB1R w KQkq - 0 5");
+    // print("{}", .{moveCount});
+    print("{}", .{f(32)});
 }
